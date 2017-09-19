@@ -4,7 +4,7 @@
   "description": "will be building a demo app to see WebWorker working",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1"    
   },
   "repository": {
     "type": "git",
@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/MishraAshish/WebWorker/issues"
   },
-  "homepage": "https://github.com/MishraAshish/WebWorker#readme"
+  "homepage": "https://github.com/MishraAshish/WebWorker#readme",
+  "devDependencies": {
+    "@angular/cli": "^1.4.2"
+  }
 }

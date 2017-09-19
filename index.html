@@ -1,5 +1,8 @@
 <!DOCTYPE html>
 <html>
+<!-- <head>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+</head> -->
 <body>
 
 <p>Count numbers: <output id="result"></output></p>
@@ -10,15 +13,30 @@
 
 <script>
 var w;
+var w2;
 
 function startWorker() {
     if(typeof(Worker) !== "undefined") {
         if(typeof(w) == "undefined") {
             w = new Worker("demo_workers.js");
+            w2 = new Worker("demo_workers.js");
+        } else if(typeof(w) != "undefined") {
+          w.terminate();
+          w = undefined;
+          w = new Worker("demo_workers.js");
+          w2.terminate();
+          w2 = undefined;
+          w2 = new Worker("demo_workers.js");
+          document.getElementById("result").innerHTML = "Data cleared....";
         }
         w.onmessage = function(event) {
-            debugger;
-            document.getElementById("result").innerHTML =  JSON.stringify(event.data);
+            //debugger;
+            document.getElementById("result").innerHTML =  JSON.stringify(event.data);          
+        };
+        w2.onmessage = function(event) {
+            //debugger;
+            //document.getElementById("result").insertAdjacentHTML("beforeend","<br>");
+            document.getElementById("result").insertAdjacentText("beforeend","Adding New Set -"+JSON.stringify(event.data))
         };
     } else {
         document.getElementById("result").innerHTML = "Sorry, your browser does not support Web Workers...";
@@ -26,17 +44,18 @@ function startWorker() {
 }
 
 function stopWorker() { 
-    w.terminate();
-    w = undefined;
+    alert("Button Click Working");
+    //w.terminate();
+    //w = undefined;
 }
 
-var ajax = function(url, data, callback, type) {
+var ajax = function (url, data, callback, type) {
   var data_array, data_string, idx, req, value;
   if (data == null) {
     data = {};
   }
   if (callback == null) {
-    callback = function() {};
+    callback = function () { };
   }
   if (type == null) {
     //default to a GET request
@@ -51,8 +70,10 @@ var ajax = function(url, data, callback, type) {
   req = new XMLHttpRequest();
   req.open(type, url, false);
   req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  req.onreadystatechange = function() {
+  req.onreadystatechange = function () {
     if (req.readyState === 4 && req.status === 200) {
+      postMessage(req.responseText);
+      debugger;
       return callback(req.responseText);
     }
   };
@@ -60,6 +81,5 @@ var ajax = function(url, data, callback, type) {
   return req;
 };
 </script>
-
 </body>
 </html>
