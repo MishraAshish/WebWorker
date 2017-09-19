@@ -29,13 +29,12 @@ function startWorker() {
           w2 = new Worker("demo_workers.js");
           document.getElementById("result").innerHTML = "Data cleared....";
         }
+        
         w.onmessage = function(event) {
-            //debugger;
             document.getElementById("result").innerHTML =  JSON.stringify(event.data);          
         };
+
         w2.onmessage = function(event) {
-            //debugger;
-            //document.getElementById("result").insertAdjacentHTML("beforeend","<br>");
             document.getElementById("result").insertAdjacentText("beforeend","Adding New Set -"+JSON.stringify(event.data))
         };
     } else {
@@ -48,38 +47,6 @@ function stopWorker() {
     //w.terminate();
     //w = undefined;
 }
-
-var ajax = function (url, data, callback, type) {
-  var data_array, data_string, idx, req, value;
-  if (data == null) {
-    data = {};
-  }
-  if (callback == null) {
-    callback = function () { };
-  }
-  if (type == null) {
-    //default to a GET request
-    type = 'GET';
-  }
-  data_array = [];
-  for (idx in data) {
-    value = data[idx];
-    data_array.push("" + idx + "=" + value);
-  }
-  data_string = data_array.join("&");
-  req = new XMLHttpRequest();
-  req.open(type, url, false);
-  req.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
-  req.onreadystatechange = function () {
-    if (req.readyState === 4 && req.status === 200) {
-      postMessage(req.responseText);
-      debugger;
-      return callback(req.responseText);
-    }
-  };
-  req.send(data_string);
-  return req;
-};
 </script>
 </body>
 </html>
